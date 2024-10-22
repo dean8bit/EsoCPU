@@ -2,6 +2,8 @@
 
 A virtual machine with modular assembly-like language for esoteric instruction sets.
 
+-- netstandard2.0, netstandard2.1
+
 -- Supports choosing a instruction set or subset of instructions
 
 -- Supports direct and indirect memory locations
@@ -19,4 +21,3 @@ Flipbit - flip a bit jump to new location
 P1eq - plus 1 to value, if equal to second value, jump to new location
 
 Subleq - subtract value from value, if less than or equal to 0, jump to new location
-

@@ -1,8 +1,12 @@
-namespace EsoCPU;
+using System;
+using System.Collections.Generic;
 
-public interface IDefinition
+namespace EsoCPU
 {
-    public string Token { get; }
-    public List<ParameterConstraint> ParameterConstraints { get; }
-    public Func<ICPU, Instruction, bool> Func { get; }
+    public interface IDefinition
+    {
+        string Token { get; }
+        List<ParameterConstraint> ParameterConstraints { get; }
+        Func<ICPU, Instruction, bool> Func { get; }
+    }
 }

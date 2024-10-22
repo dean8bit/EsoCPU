@@ -1,13 +1,16 @@
-namespace EsoCPU;
+using System.Collections.Generic;
 
-public class Instruction
+namespace EsoCPU
 {
-    public IDefinition Definition { get; set; }
-    public List<Parameter> Parameters = new();
-
-    public Instruction(IDefinition definition, List<Parameter> parameters)
+    public class Instruction
     {
-        Definition = definition;
-        Parameters = parameters;
+        public IDefinition Definition { get; set; }
+        public List<Parameter> Parameters = new List<Parameter>();
+
+        public Instruction(IDefinition definition, List<Parameter> parameters)
+        {
+            Definition = definition;
+            Parameters = parameters;
+        }
     }
 }
