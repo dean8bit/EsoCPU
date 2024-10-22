@@ -1,6 +1,5 @@
 namespace EsoCPU
 {
-
     public enum ParameterType
     {
         Constant,

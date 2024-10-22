@@ -1,6 +1,5 @@
 namespace EsoCPU
 {
-
     public interface IMemory
     {
         bool IsLocationValid(int index);

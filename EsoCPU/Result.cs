@@ -18,18 +18,38 @@
         NO_INSTRUCTION
     }
 
-    public class Result<T> where T : Enum
+    public abstract class Result
     {
         public bool Success { get; set; }
-        public T Comment { get; set; }
+
         public int Line { get; set; }
 
-        public Result(bool success, T comment, int line)
+        public Result(bool success, int line)
         {
             Success = success;
-            Comment = comment;
+
             Line = line;
         }
 
+    }
+
+    public class ParseResult : Result
+    {
+
+        public ParseResultComment Comment { get; set; }
+        public ParseResult(bool success, ParseResultComment comment, int line) : base(success, line)
+        {
+            Comment = comment;
+        }
+    }
+
+    public class StepResult : Result
+    {
+
+        public StepResultComment Comment { get; set; }
+        public StepResult(bool success, StepResultComment comment, int line) : base(success, line)
+        {
+            Comment = comment;
+        }
     }
 }

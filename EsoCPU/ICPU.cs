@@ -6,8 +6,8 @@ namespace EsoCPU
     {
         IMemory Memory { get; set; }
         List<Instruction> Instructions { get; set; }
-        Result<StepResultComment> Step();
-        Result<ParseResultComment> Parse(string[] code);
+        StepResult Step();
+        ParseResult Parse(string[] code);
         bool SetParameterValue(Parameter parameter, int value);
         bool GetParameterValue(Parameter parameter, out int value);
         void SetPointer(int value);

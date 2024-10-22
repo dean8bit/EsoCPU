@@ -1,6 +1,6 @@
-
-
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace EsoCPU
@@ -110,7 +110,7 @@ namespace EsoCPU
 
         public void SetPointer(int value) => Pointer = value;
 
-        public Result<ParseResultComment> Parse(string[] code)
+        public ParseResult Parse(string[] code)
         {
             Instructions.Clear();
 
@@ -127,13 +127,13 @@ namespace EsoCPU
                 var definitionFound = GetDefinition(token, out var definition);
                 if (!definitionFound)
                 {
-                    return new Result<ParseResultComment>(false, ParseResultComment.INVALID_INSTRUCTION, lineIndex);
+                    return new ParseResult(false, ParseResultComment.INVALID_INSTRUCTION, lineIndex);
                 }
 
                 var parameterCount = definition.ParameterConstraints.Count;
                 if (parameterCount != intructionParts.Length - 1)
                 {
-                    return new Result<ParseResultComment>(false, ParseResultComment.INVALID_PARAMETERS, lineIndex);
+                    return new ParseResult(false, ParseResultComment.INVALID_PARAMETERS, lineIndex);
                 }
 
                 var parameters = new List<Parameter>();
@@ -142,37 +142,37 @@ namespace EsoCPU
                     var foundParameter = GetParameter(intructionParts[paramIndex], out var parameter);
                     if (!foundParameter)
                     {
-                        return new Result<ParseResultComment>(false, ParseResultComment.INVALID_PARAMETER, lineIndex);
+                        return new ParseResult(false, ParseResultComment.INVALID_PARAMETER, lineIndex);
                     }
                     if (!ValidateParameter(parameter, definition.ParameterConstraints[paramIndex - 1]))
                     {
-                        return new Result<ParseResultComment>(false, ParseResultComment.INVALID_PARAMETER, lineIndex);
+                        return new ParseResult(false, ParseResultComment.INVALID_PARAMETER, lineIndex);
                     }
                     parameters.Add(parameter);
                 }
                 Instructions.Add(new Instruction(definition, parameters));
             }
             var success = Instructions.Count != 0;
-            return new Result<ParseResultComment>(success, success ? ParseResultComment.OK : ParseResultComment.NO_CODE, Instructions.Count);
+            return new ParseResult(success, success ? ParseResultComment.OK : ParseResultComment.NO_CODE, Instructions.Count);
 
         }
 
 
-        public Result<StepResultComment> Step()
+        public StepResult Step()
         {
             if (Pointer < 0 || Pointer >= Instructions.Count)
             {
-                return new Result<StepResultComment>(false, StepResultComment.END_OF_CODE, Pointer);
+                return new StepResult(false, StepResultComment.END_OF_CODE, Pointer);
             }
 
             var instruction = Instructions[Pointer];
             var result = instruction.Definition.Func(this, instruction);
             if (!result)
             {
-                return new Result<StepResultComment>(false, StepResultComment.NO_INSTRUCTION, Pointer);
+                return new StepResult(false, StepResultComment.NO_INSTRUCTION, Pointer);
             }
             Pointer++;
-            return new Result<StepResultComment>(true, StepResultComment.OK, Pointer);
+            return new StepResult(true, StepResultComment.OK, Pointer);
         }
     }
 }
